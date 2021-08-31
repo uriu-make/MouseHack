@@ -23,7 +23,8 @@
         }
       ],
       "preLaunchTask": "C/C++: g++ アクティブなファイルのビルド",
-      "miDebuggerPath": "/usr/bin/gdb",
+      // "miDebuggerPath": "/usr/bin/gdb",
+      "miDebuggerPath": "${workspaceFolder}/my_gdb",
       "sudo": true
     }
   ]
