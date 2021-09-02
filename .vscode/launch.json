@@ -8,7 +8,7 @@
       "name": "g++ - アクティブ ファイルのビルドとデバッグ",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${fileDirname}/${fileBasenameNoExtension}.o",
+      "program": "${fileDirname}/mousehack.o",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",

@@ -7,9 +7,9 @@
 			"command": "/usr/bin/g++",
 			"args": [
 				"-g",
-				"${file}",
+			"*.cpp",
 				"-o",
-				"${fileDirname}/${fileBasenameNoExtension}.o"
+				"mousehack.o"
 			],
 			"options": {
 				"cwd": "${fileDirname}"
