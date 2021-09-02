@@ -8,7 +8,7 @@
       "name": "g++ - アクティブ ファイルのビルドとデバッグ",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "program": "${fileDirname}/${fileBasenameNoExtension}.o",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
