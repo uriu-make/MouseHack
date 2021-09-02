@@ -1,4 +1,4 @@
-DEVICE_NAMEで定義されるマウスのイベントを別のイベントに変換します。\
+Linuxでsrc/shortcut.hのDEVICE_NAMEで定義されているマウスのイベントを別のイベントに変換します。\
 デバイスの名前は
 ```
 $ cat /proc/bus/input/devices
@@ -17,4 +17,9 @@ $ cat /proc/bus/input/devices
 ```sh
 $ sudo make install
 ```
-でビルドしてサービスとして登録できます。
+でビルドしてSystemdに登録できます。\
+機能の変更などを行う場合は
+```sh
+$ sudo systemctl stop mousehack
+```
+でプログラムを停止してください。
