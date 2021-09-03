@@ -26,14 +26,16 @@ short int readevent(int fd, struct input_event *event, struct timetable *t) {
   fds.events = 0;
   poll(&fds, nfds, 1);  //マウスのイベントが読み取り可能かタイムアウト付きで確認
   result = fds.revents;
-  fds.events = POLLIN;
-  poll(&fds, nfds, 1);
-  if (fds.revents == POLLIN)  //読み取り可能ならば読み込む
-    read(fd, event, sizeof(input_event));
-  gettimeofday(&time, NULL);  //1ループの時間計測
-  t->current_time = time.tv_sec * 1000000 + time.tv_usec;
-  t->runtime = t->current_time - t->old_time;
-  t->old_time = t->current_time;
+  if (result == 0) {
+    fds.events = POLLIN;
+    poll(&fds, nfds, 1);
+    if (fds.revents == POLLIN)  //読み取り可能ならば読み込む
+      read(fd, event, sizeof(input_event));
+    gettimeofday(&time, NULL);  //1ループの時間計測
+    t->current_time = time.tv_sec * 1000000 + time.tv_usec;
+    t->runtime = t->current_time - t->old_time;
+    t->old_time = t->current_time;
+  }
   return result;
 }
 //イベントの送信
