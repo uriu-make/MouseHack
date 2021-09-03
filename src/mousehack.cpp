@@ -19,6 +19,7 @@ int main() {
       //デバイスが見つからなければファイルを閉じて500ms待機する
       if (search == std::string::npos) {
         file.close();
+        usleep(500000);
       } else {  //ファイルを見つけたならば割当を調べる
         for (int i = 0; i < 3; i++)
           getline(file, str);
@@ -27,7 +28,6 @@ int main() {
         // std::cerr << device << std::endl;
         device.pop_back();
       }
-      usleep(500000);
       file.close();
     } while (search == std::string::npos);
     int mousefd = open(device.c_str(), O_RDWR);  //見つけたデバイスを開く
