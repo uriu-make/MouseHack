@@ -2,14 +2,13 @@
 
 short int left_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t) {
   short int result = 0;
-  // sendevent(uinputfd, EV_KEY, BTN_LEFT, data->button);
-  // sendevent(uinputfd, EV_SYN, SYN_REPORT, 0);
+  sendevent(uinputfd, EV_KEY, BTN_LEFT, data->button);
   return result;
 }
 
 short int right_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t) {
   short int result = 0;
-  // sendevent(uinputfd, EV_KEY, BTN_RIGHT, data->button);
+  sendevent(uinputfd, EV_KEY, BTN_RIGHT, data->button);
   // sendevent(uinputfd, EV_SYN, SYN_REPORT, 0);
   return result;
 }
@@ -117,21 +116,21 @@ short int extra_func(int mousefd, int uinputfd, struct event_data *data, struct 
 
 short int forward_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t) {
   short int result = 0;
-  // sendevent(uinputfd, EV_KEY, BTN_FORWARD, data->button);
+  sendevent(uinputfd, EV_KEY, BTN_FORWARD, data->button);
   // sendevent(uinputfd, EV_SYN, SYN_REPORT, 0);
   return result;
 }
 
 short int back_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t) {
   short int result = 0;
-  // sendevent(uinputfd, EV_KEY, BTN_BACK, data->button);
+  sendevent(uinputfd, EV_KEY, BTN_BACK, data->button);
   // sendevent(uinputfd, EV_SYN, SYN_REPORT, 0);
   return result;
 }
 
 short int task_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t) {
   short int result = 0;
-  // sendevent(uinputfd, EV_KEY, BTN_TASK, data->button);
+  sendevent(uinputfd, EV_KEY, BTN_TASK, data->button);
   // sendevent(uinputfd, EV_SYN, SYN_REPORT, 0);
   return result;
 }

@@ -63,16 +63,16 @@ int main() {
       if (result == 0) {
         if (event.type == EV_KEY) {  //ボタンの入力ならばボタンの種類ごとに処理
           switch (event.code) {
-            // case BTN_LEFT:  //各ボタンの状態とイベント以前の状態を記録しイベントが発生してからの経過時間を初期化
-            //   data[LEFT].button_old = data[LEFT].button;
-            //   data[LEFT].button = event.value;
-            //   data[LEFT].timer = 0;
-            //   break;
-            // case BTN_RIGHT:
-            //   data[RIGHT].button_old = data[RIGHT].button;
-            //   data[RIGHT].button = event.value;
-            //   data[RIGHT].timer = 0;
-            //   break;
+            case BTN_LEFT:  //各ボタンの状態とイベント以前の状態を記録しイベントが発生してからの経過時間を初期化
+              data[LEFT].button_old = data[LEFT].button;
+              data[LEFT].button = event.value;
+              data[LEFT].timer = 0;
+              break;
+            case BTN_RIGHT:
+              data[RIGHT].button_old = data[RIGHT].button;
+              data[RIGHT].button = event.value;
+              data[RIGHT].timer = 0;
+              break;
             case BTN_MIDDLE:
               data[MIDDLE].button_old = data[MIDDLE].button;
               data[MIDDLE].button = event.value;
@@ -88,21 +88,21 @@ int main() {
               data[EXTRA].button = event.value;
               data[EXTRA].timer = 0;
               break;
-            // case BTN_FORWARD:
-            //   data[FORWARD].button_old = data[FORWARD].button;
-            //   data[FORWARD].button = event.value;
-            //   data[FORWARD].timer = 0;
-            //   break;
-            // case BTN_BACK:
-            //   data[BACK].button_old = data[BACK].button;
-            //   data[BACK].button = event.value;
-            //   data[BACK].timer = 0;
-            //   break;
-            // case BTN_TASK:
-            //   data[TASK].button_old = data[TASK].button;
-            //   data[TASK].button = event.value;
-            //   data[TASK].timer = 0;
-            //   break;
+            case BTN_FORWARD:
+              data[FORWARD].button_old = data[FORWARD].button;
+              data[FORWARD].button = event.value;
+              data[FORWARD].timer = 0;
+              break;
+            case BTN_BACK:
+              data[BACK].button_old = data[BACK].button;
+              data[BACK].button = event.value;
+              data[BACK].timer = 0;
+              break;
+            case BTN_TASK:
+              data[TASK].button_old = data[TASK].button;
+              data[TASK].button = event.value;
+              data[TASK].timer = 0;
+              break;
             default:  //以上に当てはまらなければそのままイベントを送信
               write(uinputfd, &event, sizeof(struct input_event));
               break;
@@ -110,14 +110,14 @@ int main() {
         } else {  //その他のイベントならばそのまま送信
           write(uinputfd, &event, sizeof(struct input_event));
         }
-        // left_func(mousefd, uinputfd, &data[LEFT], &event, &t);
-        // right_func(mousefd, uinputfd, &data[RIGHT], &event, &t);
+        left_func(mousefd, uinputfd, &data[LEFT], &event, &t);
+        right_func(mousefd, uinputfd, &data[RIGHT], &event, &t);
         result = middle_func(mousefd, uinputfd, &data[MIDDLE], &event, &t);
         side_func(mousefd, uinputfd, &data[SIDE], &event, &t);
         extra_func(mousefd, uinputfd, &data[EXTRA], &event, &t);
-        // forward_func(mousefd, uinputfd, &data[FORWARD], &event, &t);
-        // back_func(mousefd, uinputfd, &data[BACK], &event, &t);
-        // task_func(mousefd, uinputfd, &data[TASK], &event, &t);
+        forward_func(mousefd, uinputfd, &data[FORWARD], &event, &t);
+        back_func(mousefd, uinputfd, &data[BACK], &event, &t);
+        task_func(mousefd, uinputfd, &data[TASK], &event, &t);
       }
     }
     ioctl(mousefd, EVIOCGRAB, 0);
