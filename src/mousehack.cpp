@@ -122,6 +122,7 @@ int main() {
     }
     ioctl(mousefd, EVIOCGRAB, 0);
     close(mousefd);
+    ioctl(uinputfd, UI_DEV_DESTROY);
     close(uinputfd);
   }
   return 0;
