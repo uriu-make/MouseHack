@@ -1,8 +1,6 @@
 [Unit]
 Description=Mouse hack
-After=network.target
-#BindsTo=sys-class-input-ringmouse.device
-#After=sys-class-input-ringmouse.device
+After=suspend.target
 
 [Service]
 ExecStart=/usr/bin/mousehack
@@ -11,5 +9,4 @@ StandardOutput=journal
 StandardError=journal
 
 [Install]
-#WantedBy=sys-class-input-ringmouse.device
 WantedBy=multi-user.target
