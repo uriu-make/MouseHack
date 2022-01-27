@@ -23,7 +23,7 @@
 #define FORWARD 5
 #define BACK 6
 #define TASK 7
-#define DEVICE_NAME "ERGO M575"  //機能を変更するデバイス名
+#define DEVICE_NAME "M575"  //機能を変更するデバイス名
 #define TOUCHPAD "TouchPad"
 #define die(str, args...) \
   do {                    \

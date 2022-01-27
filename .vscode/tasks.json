@@ -9,7 +9,7 @@
 				"-g",
 			"*.cpp",
 				"-o",
-				"mousehack.o"
+				"mousehack.elf"
 			],
 			"options": {
 				"cwd": "${fileDirname}"
