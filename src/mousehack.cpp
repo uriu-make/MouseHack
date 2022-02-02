@@ -2,40 +2,40 @@
 
 int main() {
   while (true) {
-  std::string str, device, buf;
-  std::size_t search = std::string::npos;
-  //デバイスの捜索
-  do {
-    std::ifstream file("/proc/bus/input/devices");
-    if (file.fail()) {
-      std::cerr << "Failed to open file." << std::endl;
-      return -1;
-    }
-    //デバイスを見つけるか最後まで調べたら捜索終了
-    while (getline(file, str) && search == std::string::npos) {
-      search = str.find(DEVICE_NAME);
-      // std::cerr << str << std::endl;
-    }
-    //デバイスが見つからなければファイルを閉じて500ms待機する
-    if (search == std::string::npos) {
-      file.close();
-      usleep(500000);
-    } else {  //ファイルを見つけたならば割当を調べる
-      do {
-        getline(file, str);
-        search = str.find("event");
-      } while (search == std::string::npos);
-      buf = str.substr(search);
-      int space = buf.find(' ');
-      if (space != std::string::npos) {
-        buf = str.substr(search, space);
+    std::string str, device, buf;
+    std::size_t search = std::string::npos;
+    //デバイスの捜索
+    do {
+      std::ifstream file("/proc/bus/input/devices");
+      if (file.fail()) {
+        std::cerr << "Failed to open file." << std::endl;
+        return -1;
       }
-      device = "/dev/input/" + buf;
-      // std::cerr << device << std::endl;
-      // device.pop_back();
-    }
-    file.close();
-  } while (search == std::string::npos);
+      //デバイスを見つけるか最後まで調べたら捜索終了
+      while (getline(file, str) && search == std::string::npos) {
+        search = str.find(DEVICE_NAME);
+        // std::cerr << str << std::endl;
+      }
+      //デバイスが見つからなければファイルを閉じて500ms待機する
+      if (search == std::string::npos) {
+        file.close();
+        usleep(500000);
+      } else {  //ファイルを見つけたならば割当を調べる
+        do {
+          getline(file, str);
+          search = str.find("event");
+        } while (search == std::string::npos);
+        buf = str.substr(search);
+        int space = buf.find(' ');
+        if (space != std::string::npos) {
+          buf = str.substr(search, space);
+        }
+        device = "/dev/input/" + buf;
+        // std::cerr << device << std::endl;
+        // device.pop_back();
+      }
+      file.close();
+    } while (search == std::string::npos);
     int mousefd = open(device.c_str(), O_RDWR);  //見つけたデバイスを開く
     int uinputfd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
     ioctl(mousefd, EVIOCGRAB, 1);  //マウスを無効化
@@ -125,6 +125,20 @@ int main() {
         back_func(mousefd, uinputfd, &data[BACK], &event, &t);
         task_func(mousefd, uinputfd, &data[TASK], &event, &t);
       }
+      search = std::string::npos;
+      std::ifstream file("/proc/bus/input/devices");
+      // if (file.fail()) {
+      //   return -1;
+      // }
+      //デバイスを見つけるか最後まで調べたら捜索終了
+      while (getline(file, str) && search == std::string::npos) {
+        search = str.find(DEVICE_NAME);
+      }
+
+      if (search == std::string::npos) {
+        result = -1;
+      }
+      file.close();
     }
     ioctl(mousefd, EVIOCGRAB, 0);
     close(mousefd);
