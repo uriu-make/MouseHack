@@ -1,6 +1,7 @@
 #include "shortcut.h"
 
 int main() {
+  int count = 0;
   while (true) {
     std::string str, device, buf;
     std::size_t search = std::string::npos;
@@ -12,15 +13,19 @@ int main() {
         return -1;
       }
       //デバイスを見つけるか最後まで調べたら捜索終了
+      count = 0;
       while (getline(file, str) && search == std::string::npos) {
         search = str.find(DEVICE_NAME);
+        count++;
         // std::cerr << str << std::endl;
       }
       //デバイスが見つからなければファイルを閉じて500ms待機する
       if (search == std::string::npos) {
-        file.close();
+        // file.close();
+        count = 0;
         usleep(500000);
       } else {  //ファイルを見つけたならば割当を調べる
+                // count--;
         do {
           getline(file, str);
           search = str.find("event");
@@ -34,7 +39,7 @@ int main() {
         // std::cerr << device << std::endl;
         // device.pop_back();
       }
-      file.close();
+      // file.close();
     } while (search == std::string::npos);
     int mousefd = open(device.c_str(), O_RDWR);  //見つけたデバイスを開く
     int uinputfd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
@@ -125,20 +130,11 @@ int main() {
         back_func(mousefd, uinputfd, &data[BACK], &event, &t);
         task_func(mousefd, uinputfd, &data[TASK], &event, &t);
       }
-      search = std::string::npos;
-      std::ifstream file("/proc/bus/input/devices");
-      // if (file.fail()) {
-      //   return -1;
-      // }
-      //デバイスを見つけるか最後まで調べたら捜索終了
-      while (getline(file, str) && search == std::string::npos) {
-        search = str.find(DEVICE_NAME);
-      }
-
-      if (search == std::string::npos) {
+      if (std::filesystem::exists(device)) {
+        result = 0;
+      } else {
         result = -1;
       }
-      file.close();
     }
     ioctl(mousefd, EVIOCGRAB, 0);
     close(mousefd);

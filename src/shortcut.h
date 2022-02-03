@@ -14,6 +14,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <filesystem>
 
 #define LEFT 0
 #define RIGHT 1
@@ -49,12 +50,12 @@ short int readevent(int fd, struct input_event *event, struct timetable *t);
 //イベントの送信
 void sendevent(int output, int type, int code, int value);
 
-short int left_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event,struct timetable *t);
-short int right_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event,struct timetable *t);
-short int middle_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event,struct timetable *t);
-short int side_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event,struct timetable *t);
-short int extra_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event,struct timetable *t);
-short int forward_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event,struct timetable *t);
-short int back_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event,struct timetable *t);
-short int task_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event,struct timetable *t);
+short int left_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t);
+short int right_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t);
+short int middle_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t);
+short int side_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t);
+short int extra_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t);
+short int forward_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t);
+short int back_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t);
+short int task_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t);
 #endif
