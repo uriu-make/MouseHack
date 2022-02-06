@@ -1,5 +1,35 @@
 #include "shortcut.h"
 
+std::string SearchDevice(std::string device) {
+  std::string str, devicepath, buf;
+  std::size_t search = std::string::npos;
+  do {
+    std::ifstream file("/proc/bus/input/devices");
+    if (file.fail()) {
+      std::cerr << "Failed to open file." << std::endl;
+      exit(0);
+    }
+    while (getline(file, str) && search == std::string::npos) {
+      search = str.find(device);
+    }
+    if (search == std::string::npos) {
+      usleep(500000);
+    } else {
+      do {
+        getline(file, str);
+        search = str.find("event");
+      } while (search == std::string::npos);
+      buf = str.substr(search);
+      int space = buf.find(' ');
+      if (space != std::string::npos) {
+        buf = str.substr(search, space);
+      }
+      devicepath = "/dev/input/" + buf;
+    }
+  } while (search == std::string::npos);
+  return devicepath;
+}
+
 void create_uinput_device(int fd) {
   struct uinput_user_dev uidev;
   memset(&uidev, 0, sizeof(uidev));

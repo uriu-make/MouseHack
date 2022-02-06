@@ -1,49 +1,18 @@
 #include "shortcut.h"
 
 int main() {
-  int count = 0;
   while (true) {
-    std::string str, device, buf;
+    std::string str, device, touchpad, buf;
     std::size_t search = std::string::npos;
     //デバイスの捜索
-    do {
-      std::ifstream file("/proc/bus/input/devices");
-      if (file.fail()) {
-        std::cerr << "Failed to open file." << std::endl;
-        return -1;
-      }
-      //デバイスを見つけるか最後まで調べたら捜索終了
-      count = 0;
-      while (getline(file, str) && search == std::string::npos) {
-        search = str.find(DEVICE_NAME);
-        count++;
-        // std::cerr << str << std::endl;
-      }
-      //デバイスが見つからなければファイルを閉じて500ms待機する
-      if (search == std::string::npos) {
-        // file.close();
-        count = 0;
-        usleep(500000);
-      } else {  //ファイルを見つけたならば割当を調べる
-                // count--;
-        do {
-          getline(file, str);
-          search = str.find("event");
-        } while (search == std::string::npos);
-        buf = str.substr(search);
-        int space = buf.find(' ');
-        if (space != std::string::npos) {
-          buf = str.substr(search, space);
-        }
-        device = "/dev/input/" + buf;
-        // std::cerr << device << std::endl;
-        // device.pop_back();
-      }
-      // file.close();
-    } while (search == std::string::npos);
+    device = SearchDevice(DEVICE_NAME);
+    touchpad = SearchDevice(TOUCHPAD);
+
     int mousefd = open(device.c_str(), O_RDWR);  //見つけたデバイスを開く
+    int touchpadfd = open(touchpad.c_str(), O_RDWR);
     int uinputfd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
     ioctl(mousefd, EVIOCGRAB, 1);  //マウスを無効化
+    ioctl(touchpadfd, EVIOCGRAB, 1);
 
     ioctl(uinputfd, UI_SET_EVBIT, EV_REL);  //使用するマウスの機能
     ioctl(uinputfd, UI_SET_RELBIT, REL_X);
@@ -136,6 +105,7 @@ int main() {
         result = -1;
       }
     }
+    ioctl(touchpadfd, EVIOCGRAB, 0);
     ioctl(mousefd, EVIOCGRAB, 0);
     close(mousefd);
     ioctl(uinputfd, UI_DEV_DESTROY);

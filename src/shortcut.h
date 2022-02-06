@@ -43,7 +43,7 @@ struct event_data {
   char button_old;
   suseconds_t timer;
 };
-
+std::string SearchDevice(std::string device);
 void create_uinput_device(int fd);
 //イベントの受信
 short int readevent(int fd, struct input_event *event, struct timetable *t);
