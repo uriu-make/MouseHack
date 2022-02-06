@@ -23,3 +23,5 @@ sudo make install
 sudo systemctl stop mousehack
 ```
 でプログラムを停止してください。
+追加機能
+・マウスが接続されるとノートパソコンのタッチパッド無効化
