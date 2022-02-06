@@ -76,7 +76,7 @@ short int middle_func(int mousefd, int uinputfd, struct event_data *data, struct
 
 short int side_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t) {
   short int result = 0;
-  if (data->button == 1 && data->button_old == 0) {  //SIDEボタンを押したならばCtrl+Alt+Dを送信
+  if (data->button == 1 && data->button_old == 0) {  // SIDEボタンを押したならばCtrl+Alt+Dを送信
     sendevent(uinputfd, EV_KEY, KEY_LEFTCTRL, 1);
     sendevent(uinputfd, EV_KEY, KEY_LEFTALT, 1);
     sendevent(uinputfd, EV_KEY, KEY_D, 1);
@@ -93,12 +93,12 @@ short int side_func(int mousefd, int uinputfd, struct event_data *data, struct i
 
 short int extra_func(int mousefd, int uinputfd, struct event_data *data, struct input_event *event, struct timetable *t) {
   short int result = 0;
-  if (data->button == 1) {  //EXTRAボタンならばAilt+Tabを送信
+  if (data->button == 1) {  // EXTRAボタンならばAilt+Tabを送信
     sendevent(uinputfd, EV_KEY, KEY_LEFTALT, 1);
     sendevent(uinputfd, EV_KEY, KEY_TAB, 1);
     sendevent(uinputfd, EV_SYN, SYN_REPORT, 0);
     data->timer = 0;
-  } else if (data->button == 0 && data->button_old == 1 && data->timer < 1000000) {  //EXTRAボタンを離しても1秒以内ならばAltキーを送信
+  } else if (data->button == 0 && data->button_old == 1 && data->timer < 1000000) {  // EXTRAボタンを離しても1秒以内ならばAltキーを送信
     sendevent(uinputfd, EV_KEY, KEY_LEFTALT, 1);
     sendevent(uinputfd, EV_KEY, KEY_TAB, 0);
     sendevent(uinputfd, EV_SYN, SYN_REPORT, 0);

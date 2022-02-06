@@ -62,7 +62,6 @@ short int readevent(int fd, struct input_event *event, struct timetable *t) {
   t->current_time = time.tv_sec * 1000000 + time.tv_usec;
   t->runtime = t->current_time - t->old_time;
   t->old_time = t->current_time;
-  // }
   return result;
 }
 //イベントの送信
