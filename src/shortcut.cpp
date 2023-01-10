@@ -97,7 +97,7 @@ short int extra_func(int mousefd, int uinputfd, struct event_data *data, struct 
     sendevent(uinputfd, EV_KEY, KEY_TAB, 1);
     sendevent(uinputfd, EV_SYN, SYN_REPORT, 0);
     data->timer = 0;
-  } else if (data->button == 0 && data->button_old == 1 && data->timer < 1000000) {  // EXTRAボタンを離しても1秒以内ならばAltキーを送信
+  } else if (data->button == 0 && data->button_old == 1 && data->timer < 800000) {  // EXTRAボタンを離しても800ms以内ならばAltキーを送信
     sendevent(uinputfd, EV_KEY, KEY_LEFTALT, 1);
     sendevent(uinputfd, EV_KEY, KEY_TAB, 0);
     sendevent(uinputfd, EV_SYN, SYN_REPORT, 0);

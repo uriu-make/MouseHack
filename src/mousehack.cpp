@@ -2,23 +2,28 @@
 
 int main() {
   while (true) {
-    std::string str, device, touchpad, buf;
+    std::string str, device, touchpad0, touchpad1, buf;
     std::size_t search = std::string::npos;
-    //デバイスの捜索
+    // デバイスの捜索
     device = SearchDevice(DEVICE_NAME);
-    touchpad = SearchDevice(TOUCHPAD);
+    touchpad0 = SearchDevice(TOUCHPAD0);
+    touchpad1 = SearchDevice(TOUCHPAD1);
 
-    int mousefd = open(device.c_str(), O_RDWR);  //見つけたデバイスを開く
-    int touchpadfd = open(touchpad.c_str(), O_RDWR);
+    int mousefd = open(device.c_str(), O_RDWR);  // 見つけたデバイスを開く
+    int touchpad0fd = open(touchpad0.c_str(), O_RDWR);
+    int touchpad1fd = open(touchpad1.c_str(), O_RDWR);
+
     int uinputfd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
-    ioctl(mousefd, EVIOCGRAB, 1);  //マウスを無効化
-    ioctl(touchpadfd, EVIOCGRAB, 1);
+    ioctl(mousefd, EVIOCGRAB, 1);  // マウスを無効化
+    ioctl(touchpad0fd, EVIOCGRAB, 1);
+    ioctl(touchpad1fd, EVIOCGRAB, 1);
 
-    ioctl(uinputfd, UI_SET_EVBIT, EV_REL);  //使用するマウスの機能
+
+    ioctl(uinputfd, UI_SET_EVBIT, EV_REL);  // 使用するマウスの機能
     ioctl(uinputfd, UI_SET_RELBIT, REL_X);
     ioctl(uinputfd, UI_SET_RELBIT, REL_Y);
     ioctl(uinputfd, UI_SET_RELBIT, REL_WHEEL);
-    ioctl(uinputfd, UI_SET_EVBIT, EV_KEY);  //使用するキーとボタン
+    ioctl(uinputfd, UI_SET_EVBIT, EV_KEY);  // 使用するキーとボタン
     ioctl(uinputfd, UI_SET_KEYBIT, BTN_LEFT);
     ioctl(uinputfd, UI_SET_KEYBIT, BTN_RIGHT);
     ioctl(uinputfd, UI_SET_KEYBIT, BTN_MIDDLE);
@@ -29,7 +34,7 @@ int main() {
     ioctl(uinputfd, UI_SET_KEYBIT, KEY_LEFTCTRL);
     ioctl(uinputfd, UI_SET_KEYBIT, KEY_D);
     ioctl(uinputfd, UI_SET_KEYBIT, KEY_0);
-    create_uinput_device(uinputfd);  //マウスとして登録
+    create_uinput_device(uinputfd);  // マウスとして登録
 
     struct event_data data[8];
     short int result = 0;
@@ -41,9 +46,9 @@ int main() {
     while (result == 0) {
       result = readevent(mousefd, &event, &t);
       if (result == 0) {
-        if (event.type == EV_KEY) {  //ボタンの入力ならばボタンの種類ごとに処理
+        if (event.type == EV_KEY) {  // ボタンの入力ならばボタンの種類ごとに処理
           switch (event.code) {
-            case BTN_LEFT:  //各ボタンの状態とイベント以前の状態を記録しイベントが発生してからの経過時間を初期化
+            case BTN_LEFT:  // 各ボタンの状態とイベント以前の状態を記録しイベントが発生してからの経過時間を初期化
               data[LEFT].button_old = data[LEFT].button;
               data[LEFT].button = event.value;
               data[LEFT].timer = 0;
@@ -83,11 +88,11 @@ int main() {
               data[TASK].button = event.value;
               data[TASK].timer = 0;
               break;
-            default:  //以上に当てはまらなければそのままイベントを送信
+            default:  // 以上に当てはまらなければそのままイベントを送信
               write(uinputfd, &event, sizeof(struct input_event));
               break;
           }
-        } else {  //その他のイベントならばそのまま送信
+        } else {  // その他のイベントならばそのまま送信
           write(uinputfd, &event, sizeof(struct input_event));
         }
         left_func(mousefd, uinputfd, &data[LEFT], &event, &t);
@@ -105,7 +110,9 @@ int main() {
         result = -1;
       }
     }
-    ioctl(touchpadfd, EVIOCGRAB, 0);
+    ioctl(touchpad0fd, EVIOCGRAB, 0);
+    ioctl(touchpad1fd, EVIOCGRAB, 0);
+
     ioctl(mousefd, EVIOCGRAB, 0);
     close(mousefd);
     ioctl(uinputfd, UI_DEV_DESTROY);

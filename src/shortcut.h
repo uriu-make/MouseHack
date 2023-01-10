@@ -25,7 +25,9 @@
 #define BACK 6
 #define TASK 7
 #define DEVICE_NAME "M575"  //機能を変更するデバイス名
-#define TOUCHPAD "TouchPad"
+#define TOUCHPAD0 "0X53 0X59 0X4E 0X50 06CB:CED3 Mouse"
+#define TOUCHPAD1 "0X53 0X59 0X4E 0X50 06CB:CED3 Touchpad"
+
 #define die(str, args...) \
   do {                    \
     perror(str);          \
